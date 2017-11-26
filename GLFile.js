@@ -21,6 +21,7 @@ var obj_frame_cube = modelTypes.cube;
 //modelLoader.loadModelFrameToProgram(shaderProgram,treeFrame);
 //modelContainer.addModelFrame(treeFrame,obj_frame_tree);
 
+
 var tree1 = new Entity(obj_frame_cube);
 var cube1 = new Entity(obj_frame_cube);
 var cube2 = new Entity(obj_frame_cube);
