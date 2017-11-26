@@ -28,8 +28,6 @@ function createShadingProgram(gl,vertexShader,fragmentShader){
 	gl.deleteProgram(shaderProgram);
 }
 
-var shaderProgram = createShadingProgram(gl,vertexShader,fragmentShader);
-
  // gl, shaderProgram
 
 

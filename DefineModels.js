@@ -28,9 +28,9 @@ class Entity{
 }
 
 class modelsClass{
-        constructor(shader){
+        constructor(renderer){
                 this.modelTypes = new Array();
-                this.renderer = new RenderEngine(shader);
+                this.renderer = renderer;
         }
         addModelFrame(frame,frameName){
                 this.renderer.addModelFrame(frame);
@@ -80,4 +80,4 @@ class modelsClass{
         }
 }
 
-modelContainer = new modelsClass(shaderProgram);
+

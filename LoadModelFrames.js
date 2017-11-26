@@ -10,7 +10,6 @@ var vertices = new Float32Array([
 0.7, 0.4, 0.5
 ]);
 var treeFrame = new modelFrame(vertices,indices,"tree");
-modelContainer.addModelFrame(treeFrame);
 
 indices2 = [
     0,  1,  2,      0,  2,  3,    // front
@@ -57,8 +56,9 @@ var vertices2 = new Float32Array([
   -1.0,  1.0,  1.0,
   -1.0,  1.0, -1.0,
 ]);
+
 var cubeFrame = new modelFrame(vertices2,indices2,"cube");
-modelContainer.addModelFrame(cubeFrame);
+
 /*
 class modelLoader{
     static loadModelFrameToProgram(shaderProgram,modelFrame){

@@ -1,5 +1,4 @@
-rot=0.1;
-rot2=0.1;
+
 class RenderEngine{
   constructor(shader){
     this.shaderProgram = shader;

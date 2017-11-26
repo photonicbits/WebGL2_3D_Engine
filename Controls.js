@@ -1,31 +1,32 @@
-var globalKeyArray = {};
-var globalMouseArray = {"moveX":0,"moveY":0};
 
-class Keyboard{
+
+class Controls{
     constructor(div){
+        this.globalKeyArray = {};
+        this.globalMouseArray = {"moveX":0,"moveY":0};
         this.player;
         this.temp;
         this.speed = 0.001;
         this.boost = 10;
         this.keys = new Object();
         for(var i=0;i<223;i++){
-            globalKeyArray[i] = false;
+            this.globalKeyArray[i] = false;
         }
-        div.onbeforeunload = function () {//Prevent Ctrl+W on firefox
-            globalKeyArray[KEY_CAM_DOWN] = false;
+        div.onbeforeunload = () => {//Prevent Ctrl+W on firefox
+            this.globalKeyArray[KEY_CAM_DOWN] = false;
             //console.log("test");
             return null;
         };
-        div.addEventListener('mousemove', function (e){
+        div.addEventListener('mousemove', e => {
             //console.log(e);
-            globalMouseArray["moveX"]+=e.movementX;
-            globalMouseArray["moveY"]+=e.movementY;
+            this.globalMouseArray["moveX"]+=e.movementX;
+            this.globalMouseArray["moveY"]+=e.movementY;
         });
-        div.addEventListener('keydown', function (e) {
-            globalKeyArray[e.keyCode] = true;
+        div.addEventListener('keydown', e => {
+            this.globalKeyArray[e.keyCode] = true;
         });
-        div.addEventListener('keyup', function (e) {
-            globalKeyArray[e.keyCode] = false;
+        div.addEventListener('keyup', e => {
+            this.globalKeyArray[e.keyCode] = false;
         });
     }
 
@@ -56,27 +57,25 @@ class Keyboard{
             this.player.pos[0]-=Math.sin(this.player.rot[1])*moveDistance;
         }
         var xMouse = this.mouseMoveX()/SENSITIVITY;
-        //var yMouse = this.mouseMoveY()/SENSITIVITY;
         this.player.rot[1]+= xMouse; // perfect
-         //+ Math.cos(rot[1]);
     }
 
     mouseMoveX(){
-        this.temp = globalMouseArray["moveX"];
-        globalMouseArray["moveX"]=0;
+        this.temp = this.globalMouseArray["moveX"];
+        this.globalMouseArray["moveX"]=0;
         return this.temp;
     }
     mouseMoveY(){
-        this.temp = globalMouseArray["moveY"];
-        globalMouseArray["moveY"]=0;
+        this.temp = this.globalMouseArray["moveY"];
+        this.globalMouseArray["moveY"]=0;
         return this.temp;
     }
 
     getKey(keyValue){
-        return globalKeyArray[keyValue];
+        return this.globalKeyArray[keyValue];
     }
 
 }
 
-var keyboard = new Keyboard(window);
+
 
