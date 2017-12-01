@@ -1,10 +1,11 @@
 
 class RenderEngine{
-  constructor(shader){
+  constructor(shader,gl){
+    this.gl = gl;
     this.shaderProgram = shader;
     this.modelFrames = new Array(); // stored vaos
   }
-  loadRenderer(){
+  loadRenderer(settings){
     //gl.enable(gl.CULL_FACE); // later
     gl.enable(gl.DEPTH_TEST);
     this.stretchFactor = gl.getUniformLocation(this.shaderProgram, "stretch");
@@ -14,11 +15,12 @@ class RenderEngine{
     this.projectionMatrix = gl.getUniformLocation(this.shaderProgram, "u_projMat");
     this.objectMatrix = gl.getUniformLocation(this.shaderProgram, "u_objectMat");
     this.u_camera = gl.getUniformLocation(this.shaderProgram, "u_camera");
-    this.projectionMat = mat4.perspective(FOV, SCREEN_RATIO,ZNEAR,ZFAR);
+    this.projectionMat = mat4.perspective(settings.FOV, settings.SCREEN_RATIO,settings.ZNEAR,settings.ZFAR);
     gl.uniformMatrix4fv(this.projectionMatrix,false,this.projectionMat);
   }
 
   addModelFrame(modelFrame){
+    var gl = this.gl;
     var vertex_position = gl.getAttribLocation(this.shaderProgram,"vertex_position"); // 1) get location on GPU for all attribs
     var vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
@@ -30,7 +32,7 @@ class RenderEngine{
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);  // 3) bind buffer
     gl.enableVertexAttribArray(vertex_position);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(modelFrame.vertices),gl.STATIC_DRAW)
-    gl.vertexAttribPointer(vertex_position,modelFrame.size,modelFrame.glType,modelFrame.normalize,modelFrame.stride,modelFrame.offset);
+    gl.vertexAttribPointer(vertex_position,modelFrame.size,gl.FLOAT,modelFrame.normalize,modelFrame.stride,modelFrame.offset);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
     gl.bindVertexArray(null);
     this.modelFrames[modelFrame.type]=modelFrame;

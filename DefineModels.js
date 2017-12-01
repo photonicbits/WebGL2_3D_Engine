@@ -1,13 +1,8 @@
-var modelTypes = {
-        tree:"tree",
-        cube:"cube"
-}
 
 class modelFrame{
         constructor(vert,indices,type){
                 this.vertices = vert;
                 this.count = indices.length;
-                this.glType = gl.FLOAT;
                 this.size = 3;
                 this.normalize = false;
                 this.stride = 0;

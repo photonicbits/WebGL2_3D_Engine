@@ -58,8 +58,8 @@ class Camera{
         this.y=-y;
         this.z=-z;
     }
-    moveCamera(controls){
-        var yMouse = controls.mouseMoveY()/SENSITIVITY;
+    moveCamera(controls,mouseSensitivity){
+        var yMouse = controls.mouseMoveY()/mouseSensitivity;
         this.pitch += yMouse*this.speed;
         this.calcPosAndRot();
         this.calcRot();

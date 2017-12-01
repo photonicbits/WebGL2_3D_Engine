@@ -10,34 +10,61 @@
  * gl_Position = {some vec4}; // the position in xyzw. 
  * 
  */
-var vertexShaderSource = `#version 300 es
 
-in vec4 vertex_position;
-out vec4 col;               // output to fragment
-out float multi1;
-out float multi2;
-out float multi3;
-out vec4 pos;
-uniform vec4 stretch;       // uniform from program
-uniform mat4 u_camera;
-uniform mat4 u_objectMat;
-uniform mat4 u_projMat;
-uniform mat4 u_viewMat;
-
-void main() {
-    multi1 = vertex_position.x;
-    multi2 = vertex_position.y;
-    multi3 = vertex_position.z;
-	//gl_Position =  obj_position + (vertex_position * (u_rotMat+u_camera));           // gl_Position IS ESSENTIAL!!!!!
-    mat4 viewProjectionMatrix = u_projMat * u_viewMat;
-    gl_Position = viewProjectionMatrix * u_objectMat * vertex_position;
-
-    //gl_Position = u_rotMat * vec4(vertex_position.xyz, 1);
-    //vec4 sample = vec4(1.4,1.4,1.4,1);
-    col = stretch;
-    pos = gl_Position;
-
-}`;
+var ShaderSource = {
+    vertexShaderSource: `#version 300 es
+    
+    in vec4 vertex_position;
+    out vec4 col;               // output to fragment
+    out float multi1;
+    out float multi2;
+    out float multi3;
+    out vec4 pos;
+    uniform vec4 stretch;       // uniform from program
+    uniform mat4 u_camera;
+    uniform mat4 u_objectMat;
+    uniform mat4 u_projMat;
+    uniform mat4 u_viewMat;
+    
+    void main() {
+        multi1 = vertex_position.x;
+        multi2 = vertex_position.y;
+        multi3 = vertex_position.z;
+        //gl_Position =  obj_position + (vertex_position * (u_rotMat+u_camera));           // gl_Position IS ESSENTIAL!!!!!
+        mat4 viewProjectionMatrix = u_projMat * u_viewMat;
+        gl_Position = viewProjectionMatrix * u_objectMat * vertex_position;
+    
+        //gl_Position = u_rotMat * vec4(vertex_position.xyz, 1);
+        //vec4 sample = vec4(1.4,1.4,1.4,1);
+        col = stretch;
+        pos = gl_Position;
+    
+    }`,
+    
+    fragmentShaderSource: `#version 300 es
+    
+    precision mediump float; 
+    
+    in vec4 col;
+    in vec4 pos;
+    in float multi1;
+    in float multi2;
+    in float multi3;
+    out vec4 outColor;              // ESSENTIAL!!!!!
+    
+    void main() {
+        outColor = col;
+        //outColor.r = col.z;
+        //outColor.g = sin(outColor.z*sin(multi3*multi1)-cos(outColor.x));
+        //outColor.b = cos(multi3+multi3+sin(multi1)*col.x-cos(multi2)+cos(multi3));
+        float temp = sin(pos.x*(multi3)+multi2/col.x)*pos.z/3.0;
+        float temp2 = (multi1+pos.x*outColor.r/temp)/3.0;
+        float temp3 = pos.z*(temp2*col.x/temp);
+        outColor.b = cos(cos(temp-pos.x-temp3)*outColor.r);
+        outColor.r = cos(multi3*temp)*(sin(temp)*pos.z*outColor.b*pos.y*multi1);
+        outColor.g = sin(cos(temp3)-cos(outColor.r)+sin(temp3*col.x)*cos(temp3*temp2));
+    }`
+}
 
 /**
  * Fragment shaders require only 2 defaults:
@@ -46,29 +73,7 @@ void main() {
  * 
  * ref code: // outColor.xyzw*vec4/outColor.xw*vec2 sin(0-1) cos(0-1) mod(x,%);
  */
-var fragmentShaderSource = `#version 300 es
 
-precision mediump float; 
-
-in vec4 col;
-in vec4 pos;
-in float multi1;
-in float multi2;
-in float multi3;
-out vec4 outColor;              // ESSENTIAL!!!!!
-
-void main() {
-    outColor = col;
-    //outColor.r = col.z;
-    //outColor.g = sin(outColor.z*sin(multi3*multi1)-cos(outColor.x));
-    //outColor.b = cos(multi3+multi3+sin(multi1)*col.x-cos(multi2)+cos(multi3));
-    float temp = sin(pos.x*(multi3)+multi2/col.x)*pos.z/3.0;
-    float temp2 = (multi1+pos.x*outColor.r/temp)/3.0;
-    float temp3 = pos.z*(temp2*col.x/temp);
-    outColor.b = cos(cos(temp-pos.x-temp3)*outColor.r);
-    outColor.r = cos(multi3*temp)*(sin(temp)*pos.z*outColor.b*pos.y*multi1);
-    outColor.g = sin(cos(temp3)-cos(outColor.r)+sin(temp3*col.x)*cos(temp3*temp2));
-}`;
 
 /**
  * This data's "uniform" can be set using the following example

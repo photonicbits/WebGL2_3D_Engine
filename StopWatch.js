@@ -18,10 +18,9 @@ class StopWatch{
         return this.ticks;
     }
 
-    getFrameDelay(fps){
-        var delay = SEC_PER_FRAME-this.ticks;
+    getFrameDelay(secondsPerFrame){
+        var delay = secondsPerFrame-this.ticks;
         return delay>=0?delay/2.0:0; // /2 avoid spike every consecutive frame
     }
 }
 
-var stopWatch = new StopWatch();

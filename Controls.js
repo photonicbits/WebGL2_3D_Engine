@@ -1,7 +1,7 @@
 
 
 class Controls{
-    constructor(div){
+    constructor(settings,div){
         this.globalKeyArray = {};
         this.globalMouseArray = {"moveX":0,"moveY":0};
         this.player;
@@ -13,7 +13,7 @@ class Controls{
             this.globalKeyArray[i] = false;
         }
         div.onbeforeunload = () => {//Prevent Ctrl+W on firefox
-            this.globalKeyArray[KEY_CAM_DOWN] = false;
+            this.globalKeyArray[settings.KEY_CAM_DOWN] = false;
             //console.log("test");
             return null;
         };
@@ -34,29 +34,29 @@ class Controls{
         this.player=player;
     }
 
-    updateControls(){
-        var moveDistance = this.speed*globalFrameMultiplier;
-        if(this.getKey(KEY_CAM_BOOST)){
+    updateControls(ticks){
+        var moveDistance = this.speed*ticks;
+        if(this.getKey(settings.KEY_CAM_BOOST)){
             moveDistance *= this.boost;
         }
-        if(this.getKey(KEY_CAM_LEFT)){
+        if(this.getKey(settings.KEY_CAM_LEFT)){
             this.player.pos[0]-=Math.cos(this.player.rot[1])*moveDistance;
             this.player.pos[2]-=Math.sin(this.player.rot[1])*moveDistance;
-        } if(this.getKey(KEY_CAM_RIGHT)){
+        } if(this.getKey(settings.KEY_CAM_RIGHT)){
             this.player.pos[0]+=Math.cos(this.player.rot[1])*moveDistance;
             this.player.pos[2]+=Math.sin(this.player.rot[1])*moveDistance;
-        } if(this.getKey(KEY_CAM_UP)){
+        } if(this.getKey(settings.KEY_CAM_UP)){
             this.player.pos[1]+=moveDistance;
-        } if(this.getKey(KEY_CAM_DOWN)){
+        } if(this.getKey(settings.KEY_CAM_DOWN)){
             this.player.pos[1]-=moveDistance;
-        } if(this.getKey(KEY_CAM_FORWARD)){
+        } if(this.getKey(settings.KEY_CAM_FORWARD)){
             this.player.pos[2]-=Math.cos(this.player.rot[1])*moveDistance;
             this.player.pos[0]+=Math.sin(this.player.rot[1])*moveDistance;
-        } if(this.getKey(KEY_CAM_BACKWARD)){
+        } if(this.getKey(settings.KEY_CAM_BACKWARD)){
             this.player.pos[2]+=Math.cos(this.player.rot[1])*moveDistance;
             this.player.pos[0]-=Math.sin(this.player.rot[1])*moveDistance;
         }
-        var xMouse = this.mouseMoveX()/SENSITIVITY;
+        var xMouse = this.mouseMoveX()/settings.SENSITIVITY;
         this.player.rot[1]+= xMouse; // perfect
     }
 

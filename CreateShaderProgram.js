@@ -9,13 +9,14 @@ function createShader(gl,type,source){
 	}
 	console.log("Failed to create shader");
 	gl.deleteShader(shader);
+	return shader;
 }
 
-var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
 // create the shading program
-function createShadingProgram(gl,vertexShader,fragmentShader){
+function createShadingProgram(gl,vertexShaderSource,fragmentShaderSource){
+	var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+	var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
 	var shaderProgram = gl.createProgram();
 	gl.attachShader(shaderProgram,vertexShader);
 	gl.attachShader(shaderProgram,fragmentShader);
